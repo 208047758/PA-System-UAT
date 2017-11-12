@@ -1,0 +1,421 @@
+﻿@model PA_System.Models.Survey
+@{
+    ViewBag.Title = "Approve Employee Questionnaire";
+}
+<div class="row">
+    <div class="col-xs-12">
+        <h3 class="page-header heading-text-color">
+            Verify Survey
+        </h3>
+    </div>
+
+</div>
+
+@using (Html.BeginForm("ApproveQuestionnaire", "EmployeeSurvey", FormMethod.Post, new { @id = "formApproveAsurvey" }))
+{
+    <br />
+
+    <div class="col-xs-12 col-md-6 col-lg-9">
+
+        <div class="row">
+
+            <div class="col-xs-12">
+
+                    @*<label class="heading-text-color">Choose survey status to filter employees</label>*@
+
+               
+                <div ng-app="myangularapp">
+
+                    <div ng-controller="crudcontroller">
+
+
+                        <div class="panel panel-success" ng-show="divShowFilters">
+
+                            @*<div class="panel-heading">Approve / Reject Question</div>*@
+
+                            <div class="panel-body" >
+
+                                <div class="checkbox checkbox-primary">
+                                    <input id="chkAll" type="checkbox" checked="checked">
+                                    <label for="chkAll">Show All</label>
+                                </div>
+
+                                <div class="checkbox checkbox-success">
+                                    <input id="chkCompleted" type="checkbox" ng-model="chkCompleted" ng-checked="GetSurveyStatus(chkCompleted)">
+                                    <label for="chkCompleted">Completed</label>
+                                </div>
+
+                                <div class="checkbox checkbox-warning">
+                                    <input id="chkIncomplete" type="checkbox">
+                                    <label for="chkIncomplete">Incomplete</label>
+                                </div>
+
+                                <div class="checkbox checkbox-info">
+                                    <input id="chkApproved" type="checkbox">
+                                    <label for="chkApproved">Approved</label>
+                                </div>
+
+                                <div class="checkbox checkbox-danger">
+                                    <input id="chkRejected" type="checkbox">
+                                    <label for="chkRejected">Rejected</label>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="alert alert-success" role="alert" style="display:none; padding-bottom:7px; padding-top:9px" id="saveApproveQuestionStatusAlert" ng-show="alertApproveQuestionSuccess">
+
+                            <i class="fa fa-check-circle alert-message" aria-hidden="true"></i> &nbsp;<label id="lblApproveQuestionSuccessAlert" ng-model="approveQuestionSuccessLabel">Survey Uploaded Successfully</label>
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        </div>
+
+
+                        <div class="alert alert-danger" role="alert" style="display:none; padding-bottom:7px; padding-top:9px" id="divApproveQuestionErrorMessageAlert" ng-show="divErrorMessage">
+
+                            <i class="fa fa-exclamation-circle" aria-hidden="true"></i> &nbsp;<label id="lblApproveQuestionErrorMessageAlert" ng-model="lblApproveQuestionErrorMessageAlert">Error occured, please try again</label>
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        </div>
+
+                        <div style="padding:5px">
+
+                            <div  ng-show="divEmployeeTable">
+
+                                <table class="table table-striped" datatable="ng" ng-show="employeeTable" id="tableApproveQuestions">
+                                    <thead style="color: white; background-color: #1cb5b0">
+                                        <tr>
+                                            <th> Name</th>
+                                            <th> Surname</th> 
+                                            <th ng-hide="cellSurvey_For"></th>                                           
+                                            <th> Business Unit </th>
+                                            <th style="text-align:center"> Survey Status</th>
+                                            <th style="text-align:center"> Review</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="emp in EmployeesListVerify | filter: searchKeyword ">
+                                            <td> {{emp.First_Name}}</td>
+                                            <td> {{emp.Surname}} </td>
+                                            <td ng-hide="cellSurvey_For"> {{emp.Survey_For}} </td>
+                                            <td>{{emp.Team_Desc}}</td>
+                                            @*<td ng-if="emp.Completed == true"><h4><span class="label label-success">Completed</span></h4></td>
+                                            <td ng-if="emp.Completed == false && emp.Verified == false"><h4><span class="label label-warning">Incomplete</span></h4></td>*@
+                                            <td ng-if="emp.Verified == true" style="text-align:center"><h4><span class="label label-success">Verified</span></h4></td>
+                                            <td ng-if="emp.Verified == false" style="text-align:center"><h4><span class="label label-warning">Unverified</span></h4></td>
+                                            <td style="text-align:center">
+                                                <a href="#" class="btn btn-info button-back-color" ng-click="LoadQuestionsPerEmployeeForVerification(emp, emp.Survey_For)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th> Name</th>
+                                            <th> Surname</th>
+                                            <th ng-hide="cellSurvey_For"></th> 
+                                            <th> Business Unit </th>
+                                            <th style="text-align:center"> Survey Status</th>
+                                            <th style="text-align:center"> Review</th>
+                                        </tr>
+                                    </tfoot>
+
+                                </table>
+
+                            </div>
+
+                            <div class="col-xs-12 col-md-3 col-lg-6" ng-show="divBackButton" style="padding:5px;">
+                                <label></label>
+                                <div class="form-group">
+
+                                    <div class="col-xs-12 col-md-6 col-lg-3">
+                                        <label></label>
+                                        <input type="button" ng-model="btnMoveToEmployees" id="btnBack" value="<< Back" class="btn btn-block btn-warning"  ng-click="ShowEmployeeTable()" />
+
+                                    </div>
+                                    <div class="col-xs-12 col-md-6 col-lg-3">
+                                        <label></label>
+                                        <input type="button" ng-model="btnMoveToEmployees" id="btnApproveSurvey" ng-click="ManagerVerifyAllQuestions()" value="Approve Survey" class="btn btn-block button-back-color" />
+                                        <br />
+                                        <br />
+                                        <br />
+
+                                    </div>
+                                </div>
+                               
+                            </div>
+
+
+
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+             
+                            <div class="panel panel-success" ng-show="panelSingleQuestion">
+                                <br />
+                                <div class="panel-heading" style="text-align:left;">Approve / Reject Question</div>
+
+                                <div class="panel-body">
+
+                                    <label style="display:block; margin-left: 0px; position:absolute; font-size:large">Question</label><br />
+                                    <p id="question" style="font-size:large" class="heading-text-color">{{Question}}</p>
+
+                                    
+                                    @*<label>KPI Desc:</label>
+                                    <p id="kpiDesc">{{KPIDesc}}</p>*@
+
+                                    @*<label style="font-size:large">Raters</label>
+                                    <p id="ratersString" style="font-size:large" class="heading-text-color">{{RatersString}}</p>*@
+
+                                    <label style="font-size:large">Appropriate</label>
+                                    <select ng-model="data.ApproveQuestion" ng-options="item for item in Actions" class="form-control drop-down-border-color" ng-change="showCommentDiv(data.ApproveQuestion)" style="max-width:none; width:18.8vw;">
+                                       
+                                    </select>
+
+                                    <div id="comment" ng-show="divSurveyComment">
+
+                                        <label style="font-size:large">Comment</label>
+                                        <div>
+                                            <textarea rows="4" cols="100" ng-model="EnteredSurveyComment" ng-keyup="DisableSaveButton()" style = "height:60px; width:40.8vw; max-width:none; resize:none" class="form-control drop-down-border-color" placeholder="Enter reason for rejecting this question" oninvalid="this.setCustomValidity('Please enter comment and try again')">
+
+                                            </textarea>
+                                            @*@Html.TextAreaFor(x => x.Question, new { @class = "form-control drop-down-border-color", style = "height:60px; width:40.8vw; max-width:none; resize:none" })*@
+                                            @*<p>
+                                                {{EnteredSurveyComment}}
+                                            </p>*@
+                                         </div>
+                                        
+                                    </div>                                   
+                                
+                                    @*<div class="col-xs-12 col-md-3 col-lg-3" id="DivApproveQuestion" style="padding:5px;">
+                                        <label></label>
+                                        <input type="button" id="btnApproveQuestion" value="Save" class="btn btn-block button-back-color" style="width:61%" ng-disabled="btnApproveQuestionDisable" ng-click="validateForm(data.ApproveQuestion); onSubmit($event)" />
+                                   
+                                     </div>*@
+
+                                    <div class="col-xs-12 col-md-3 col-lg-6" id="DivApproveQuestion" style="padding:5px; margin-left:-18px">
+
+                                        <div class="form-group">
+
+                                            <div class="col-xs-12 col-md-6 col-lg-3">
+                                                <label></label>
+                                                <input type="button" id="btnCancel" value="cancel" ng-click="HideQuestionResponseDiv()" class="btn btn-block btn-info" />
+
+                                            </div>
+                                            <div class="col-xs-12 col-md-6 col-lg-3">
+                                                <label></label>
+                                                <input type="button" id="btnApproveQuestion" value="Save" class="btn btn-block button-back-color" ng-disabled="btnApproveQuestionDisable" ng-click="validateForm(data.ApproveQuestion); onSubmit($event)" />
+
+                                            </div>
+                                        </div>
+
+                                        @*<div class="row">
+
+                                            <input type="button" id="btnCancel" value="cancel" ng-click="HideQuestionResponseDiv()" class="btn btn-block btn-info" style="margin-left:9px; width:37%" />
+
+                                            <input type="button" id="btnApproveQuestion" value="Save" class="btn btn-block button-back-color" style="width:61%" ng-disabled="btnApproveQuestionDisable" ng-click="validateForm(data.ApproveQuestion); onSubmit($event)" />
+
+
+                                        </div>*@
+
+
+                                    </div>
+
+                                    @*<div class="col-xs-12 col-md-3 col-lg-3" id="DivApproveQuestion" style="padding:5px;">
+
+                                        <div class="row">
+
+                                            <input type="button" id="btnApproveQuestion" value="Save" class="btn btn-block button-back-color" style="width:61%" ng-disabled="btnApproveQuestionDisable" ng-click="validateForm(data.ApproveQuestion); onSubmit($event)" />
+
+                                        </div>
+
+                                    </div>*@
+
+                                </div>
+
+                            </div>
+
+                            <div ng-show="divApproveEmployeeQuestion">
+
+                                <input type="hidden" id="managerName" ng-model="modelManager" />
+
+                                <table class="table table-striped display" datatable="ng" ng-show="surveyQuestionTable">
+                                    <thead style="color: white; background-color: #1cb5b0">
+                                        <tr>
+                                            <th ng-hide="cellManager">Manager</th>
+                                            <th> Question</th>
+                                            <th ng-hide="hideRatersList"> Raters</th>
+                                            <th> Status </th>
+                                            <th> Accept</th>
+                                            @*<th>Reject</th>*@
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="q in Questions | filter: searchKeyword">
+
+                                            <td ng-hide="cellManager">{{q.Manager_Name}}</td>
+                                            <td style="width:54%"> {{q.Question}}</td>
+                                          
+                                            <td ng-hide="hideRatersList"> {{q.RatersString}} </td>
+
+                                            @*<td ng-if="q.Reviewed == true"><h4><span class="label label-success">Reviewed</span></h4></td>
+                                            <td ng-if="q.Reviewed == false"><h4><span class="label label-warning"><i>Review Pending</i></span></h4></td>*@
+                                            <td ng-if="q.Manager_Verified == true"><h4><span class="label label-success">Verified</span></h4></td>
+                                            <td ng-if="q.Manager_Verified == false"><h4><span class="label label-warning">Unverified</span></h4></td>
+
+                                            @*<td ng-if="q.Status == 'Approved'">                                            
+                                                <i class="fa fa-check heading-text-color" aria-hidden="true" style="font-size:x-large; color:green"></i>
+                                            </td>*@
+
+                                           
+
+                                            <td >
+                                                <a href="#" class="btn btn-info button-back-color" data-target="#Update" ng-click="ManagerVerifySingleQuestion(q.Question)"><i class="fa fa-check-circle" aria-hidden="true"></i></a>
+                                                @*<a href="#" class="btn btn-danger" id="btnDelete" data-toggle="modal" data-target="#deleteDialog" ng-click="get(emp)">Delete</a>*@
+                                            </td>
+
+                                            @*<td ng-if="q.Status == 'Rejected'">
+                                                <i class="fa fa-times-circle danger" aria-hidden="true" style="font-size:x-large; color:#ac2922"></i>
+                                            </td>*@
+
+                                            @*<td>
+                                                <a href="#" class="btn btn-danger" ng-click="isPopupVisible()"><i class="fa fa-times-circle" aria-hidden="true"></i></a>
+                                            </td>*@
+                                        </tr>
+                                    </tbody>
+
+                                    <tfoot>
+                                        <tr>
+                                            <th ng-hide="cellManager">Manager</th>
+                                            <th> Question</th>
+                                            <th ng-hide="hideRatersList"> Raters</th>
+                                            <th> Status </th>
+                                            <th> Accept</th>
+                                            @*<th>Reject</th>*@
+                                        </tr>
+                                    </tfoot>
+
+                                </table>
+
+                            </div>
+
+                            
+
+                            @*<div class="dataTables_info" id="info"role="status" aria-live="polite"> </div>
+
+                            <div class="dataTables_paginate paging_full_numbers">
+                                <a class="paginate_button first disabled" aria-controls="example">First</a>
+                                <a class="paginate_button first disabled" aria-controls="example">Previous</a>
+
+
+                                <a class="paginate_button first disabled" aria-controls="example">Next</a>
+                                <a class="paginate_button first disabled" aria-controls="example">Last</a>
+
+                            </div>*@
+
+                        </div>
+                        <br />
+
+                        <div class="modal" id="Update" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h3 class="text-info">Survey Questions</h3>
+                                    </div>
+                                    <div class="modal-body">
+                                        @*Update Employee form starts here...*@
+                                        <form class="form-horizontal" name="UpdateEmployeeForm">
+                                            <div class="form-group">
+
+                                                <input class="form-control" readonly="readonly" name="EmpNo" ng-model="Question" type="hidden" placeholder="Question"  />
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="text-info"> Question</label>
+                                                <input class="form-control" name="Question" ng-model="Question" type="text" placeholder="Question"  />
+                                                <p>{{Question}}</p>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="text-info"> Raters</label>
+                                                <input class="form-control" name="Raters" ng-model="RatersString" type="number" placeholder="Raters"  />
+                                                <p>{{RatersString}}</p>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="text-info"> KPI</label>
+                                                <input class="form-control" name="DeptName" ng-model="KPIDesc" type="text" placeholder="KPI"  />
+                                                <p>{{KPIDesc}}</p>
+                                            </div>
+
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-success" id="btnUpdate" data-dismiss="modal" ng-click="update()">View</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        @*Delete Employee record*@
+
+                        @*<input type="button" value="Show Popup" ng-click="isPopupVisble()" />*@
+                        @*<div ng-show="showPopup">
+                            <div class="alertBg">
+                                <div class="alertPlaceholder" style="width:25vw">
+
+                                    <h3 class="heading-text-color" style="margin-top:0px">Deleting survey question</h3>
+
+                                    <hr class="heading-text-color" style="margin-top:0px" />
+
+                                    <div class="row">
+
+                                        <label>Are you sure you want to remove this question?</label>
+
+                                    </div>
+                                    <br />
+                                    <hr class="heading-text-color" style="margin-top:0px" />
+
+                                    <div class="form-group">
+
+                                        <input id="btnOkRemove" class="confirm btn btn-success" tabindex="2" value="Yes" ng-click="deleteRecord()">
+                                       
+                                        <input id="btnCanceRemove" class="btn btn-info" tabindex="2" value="Cancel" ng-click="hidePrompt()">
+                                   
+                                     </div>
+                                </div>
+                            </div>
+                        </div>*@
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="alertBg" id="DivLoadingProgress">
+
+        <div class="loading-popup">
+
+            <div id="loading" style="top:0vw; left:5%; position:relative">
+            </div>
+
+        </div>
+
+    </div>
+
+}
+
+<script src="~/Scripts/CRUDScripts/Module.js"></script>
+<script src="~/Scripts/CRUDScripts/Controller.js"></script>
+<script src="~/Scripts/CRUDScripts/Service.js"></script>
+<script src="~/Scripts/CRUDScripts/Views/CompleteSurvey/loadingservice.js"></script>
+
+@*<script src="~/Scripts/angular-route.js"></script>*@
+
+@*<script src="~/Scripts/CRUDScripts/Views/EmailNotification/EmailNotificationController.js"></script>*@
+
+@*<link href="~/Content/css/libs/jquery-ui.css" rel="stylesheet" />*@
+
+
+

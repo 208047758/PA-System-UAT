@@ -1,0 +1,97 @@
+﻿@model PA_System.Models.RatingComparisonResportModel
+@{
+    ViewBag.Title = "View Rating Comparison";
+}
+<div class="row">
+
+    <div class="col-xs-12">
+
+        <h3 class="page-header heading-text-color">
+
+            Rating Comparison
+
+        </h3>
+
+    </div>
+
+</div>
+@using (Html.BeginForm("ViewRatingComparison", "EmployeeSurvey", FormMethod.Get, new { @id = "formViewRatingComparisonReport" }))
+{
+    <div class="col-xs-12 col-md-6 col-lg-9">
+
+        <div class="row">
+
+            @if (Model.ComparisonReport.Count() == 0)
+            { <div class="alert alert-warning" role="alert"><strong><i>No identifical questions found</i> </strong></div> }
+
+            @{
+                foreach (var report in Model.ComparisonReport)
+                {
+                    <table class="table table-bordered" id="@report.QuestionID">
+
+                        <thead style="color: white; background-color: #1cb5b0; border-bottom-style:solid; border-bottom-color:black; border-bottom-width:2.5px">
+
+                            <tr>
+                                <th>Question</th>
+
+                                @foreach (var column in report.SurveryForList)
+                                {
+                                    <th>@column.Text</th> }
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+                                <td style="width:40%">@report.Question</td>
+
+                                @foreach (var rating in report.Ratings)
+                                {
+                                    <td style="text-align:center; width:11%">
+
+                                        @if (rating.Value == "0" || rating.Value == "0.0") { <label style="font-weight:normal">Rating - N/A</label> }
+
+                                        else { <label style="font-weight:normal"> Rating - </label> @rating.Value }                                        
+
+                                        @if (rating.RatingComment != "")
+                                        {
+                                            <a href="#" data-toggle="popover" data-trigger="focus" data-placement="bottom" data-content="@rating.RatingComment" data-original-title="" title="Rating Comment">
+                                                <br />
+                                                View Comment
+                                            </a>
+                                        }
+
+                                    </td>
+                                }
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                    <br />
+                }
+            }
+        </div>
+
+    </div>
+
+    <div class="alertBg" id="DivLoadingProgress">
+
+        <div class="loading-popup">
+
+            <div id="loading" style="top:0vw; left:5%; position:relative"></div>
+
+        </div>
+
+    </div>
+                }
+
+@*<script src="~/Scripts/CRUDScripts/Views/Raters/RatingComparison.js"></script>*@
+
+<script src="~/Scripts/CRUDScripts/Views/CompleteSurvey/loadingservice.js"></script>
+
+

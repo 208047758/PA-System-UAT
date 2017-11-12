@@ -1,0 +1,120 @@
+﻿@model PA_System.Infrastructure.Employee
+@{
+    ViewBag.Title = "Employee Data";
+}
+<div class="row">
+    <div class="col-xs-12">
+        <h3 class="page-header heading-text-color">
+            Upload Employee Data
+        </h3>
+    </div>
+
+</div>
+
+
+@using (Html.BeginForm("UploadEmployeeData", "Employee", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(c => c.CSVFileStatus)
+
+    <input type="hidden" id="hiddenFileHeaderFormat" data-value="@Request.RequestContext.HttpContext.Session["someKey"]" />
+
+    <input type="hidden" id="csvFileFormat" name="csvFileStatusMessage" />
+
+    <div class="col-xs-12 col-md-6 col-lg-9">
+
+        <div class="row">
+
+            <div class="alert alert-success" role="alert" style="display:none; width:65%; padding-bottom:7px; padding-top:9px" id="saveEmployeeDataStatusAlert">
+
+                <i class="fa fa-check-circle alert-message" aria-hidden="true"></i> &nbsp;<label id="lblEmployeeDataSuccessAlert">Survey Uploaded Successfully</label>
+                <a class="close" data-dismiss="alert" href="#">x</a>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="alert alert-danger" role="alert" style="display:none; width:65%; padding-bottom:7px; padding-top:9px" id="divEmployeeDataErrorMessageAlert">
+
+                <i class="fa fa-exclamation-triangle alert-message" aria-hidden="true"></i> &nbsp;<label id="lblEmployeeDataErrorMessageAlert">Error occured, please try again</label>
+                <a class="close" data-dismiss="alert" href="#">x</a>
+            </div>
+
+        </div>
+
+       
+
+        <div class="row">
+
+            <div class="col-xs-12 col-md-3 col-lg-6">
+
+                <label class="heading-text-color">Upload Employee CSV file (.csv)</label>
+                <label class="btn btn-default btn-flex drop-down-border-color">
+                    <i class="fa fa-upload heading-text-color" aria-hidden="true"></i>&nbsp;&nbsp;
+                    <label id="fileUploadEmployeeDataCaption" style="font-weight:normal"><i> Choose csv file.....</i> </label>
+
+                    <input type="file" id="fileUploadEmployeeData" name="fileUploadEmployeeData" value="select a file" class="custom-file-input heading-text-color" style="display: none;" />
+                </label>
+                
+            </div>
+
+            <div class="col-xs-12 col-md-3 col-lg-3" id="submitEmployeeData">
+                <label></label>
+                <label></label>
+                <label></label>
+                
+                <input type="submit" id="btnUploadEmployeeData" value="Submit" class="btn btn-block button-back-color" style="width:61%" />
+            </div>
+
+        </div>
+
+        <div class="modal fade" tabindex="-1" role="dialog" id="simpleModal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Modal title</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>One fine body&hellip;</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+        <div class="modal fade" id="modalEployeeDataUpload" aria-hidden="true" tabindex="-1" role="dialog" data-backdrop="static">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header button-back-color">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title white-text-color" id="myModalLabel"><i>Uploading Employee Information</i><span id="modalTitlePrimaryIds"></span></h4>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="row">
+
+                            <div class="col-xs-12 col-md-6 col-lg-12">
+
+                                <ul id="modalErrorContent" class="heading-text-color" style="margin-left:36px"></ul>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success button-back-color" data-dismiss="modal">Ok</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+}
+<script type="text/javascript" src="~/Content/js/Views/Employee/employeeData.js"></script>

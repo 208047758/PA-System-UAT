@@ -1,0 +1,172 @@
+﻿@{
+    ViewBag.Title = "Notify Raters";
+}
+<div class="row">
+    <div class="col-xs-12">
+        <h3 class="page-header heading-text-color">
+            Notify Raters
+        </h3>
+    </div>
+</div>
+
+<div ng-app="EmailNotificationApp">
+
+    <div ng-controller="EmailNotificationController">
+
+        @using (Html.BeginForm("NotifyRaters", "EmailNotification", FormMethod.Get, new { @id = "formNotifyRaters" }))
+        {
+                <div class="alert alert-success" role="alert" style="display:none; width:40.8vw" id="divEmailSentSuccessAlert">
+
+                    <i class="fa fa-check-circle" aria-hidden="true"></i> &nbsp;Email(s) successfully sent to <label id="successMessage"></label>
+
+                </div>
+            
+       
+                <div class="alert alert-danger" role="alert" style="width:40.8vw;" id="divShowAlertWarning" >
+
+                    <i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#a94442"></i> &nbsp; <label id="lblAlertWarning"></label>
+
+                </div>
+
+
+
+            <div class="row" ng-show="divBusinessUnits">
+
+                <div class="col-xs-12 col-md-6 col-lg-6">
+
+                    <label class="heading-text-color">Select Option</label>
+
+                    <select ng-model="SurveyOption" id="drpSelectOption" class="form-control drop-down-border-color heading-text-color" style="max-width:none; width:40.8vw;">
+                        <option class="heading-text-color" value="" disabled selected>---Please Select---</option>
+                        <option class="heading-text-color" value="1"  >By Survey</option>
+                        <option class="heading-text-color" value="2" >By Rater</option>
+                    </select>
+
+                    <label id="lblBusinessUnit" class="heading-text-color">Select Business Unit</label>
+
+                    <select id="drpSelectedBusinessUnit" ng-model="BusinessUnit" ng-options="DepartmentDropDown.Name for DepartmentDropDown in DepartmentList track by DepartmentDropDown.Value" class="form-control drop-down-border-color heading-text-color" style="max-width:none; width:40.8vw;">
+                        <option class="heading-text-color" value="" disabled selected>---Please Select---</option>
+                    </select>
+
+                    <input type="text" id="selectedRatersNoBeNotified" name="raterString" ng-model="raterModel" ng-show="notifyRatersString" />
+
+                
+                    <div id="divEmployeesWithSurveyToNotify">
+
+                        <label class="heading-text-color">Select employees with surveys</label>
+
+                        <select id="drpSurveyFor" class="form-control drop-down-border-color" style="max-width:none; width:40.8vw; margin-left: 0px;">
+                            <option value="0" class="heading-text-color">--Please Select---</option>
+                        </select>
+
+                    </div>       
+                    
+                    <div id="divRaterEmployeeList">
+
+                        <label class="heading-text-color">Select Rater</label>
+
+                        <select id="drpRaterList" class="form-control drop-down-border-color" style="max-width:none; width:40.8vw; margin-left: 0px;">
+                            <option value="0" class="heading-text-color">--Please Select---</option>
+                        </select>
+
+                    </div>            
+
+
+                    <div id="divSelectedRatersToNotify">
+
+                        <label class="heading-text-color" id="lblRatersToNotify">Select Rater(s) be notified</label>
+
+                        <select id="drpRater" class="form-control drop-down-border-color  multiple" style="max-width:none; width:40.8vw; margin-left: 0px;">
+                            <option value="0" class="heading-text-color">--Please Select---</option>
+                        </select>
+
+                    </div>                   
+                   
+                    <div class="row" id="divTriggerNotification">
+
+                        <div class="form-group">
+
+                            <div class="col-xs-12 col-md-3 col-lg-3" id="divShowNextButton">
+                                <label></label>
+                                <input type="button" id="btnNext" ng-model="ModelNext" ng-click="GetRaters()" value="Next" class="btn btn-block button-back-color" />
+
+                            </div>
+
+                            <div class="col-xs-12 col-md-3 col-lg-3" id="divSendMail">
+                                <label></label>
+                                <input type="button" id="btnSendEmail" ng-model="Save" value="Send Email" class="btn btn-block button-back-color" />
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-md-6 col-lg-9" style="padding:5px">
+
+                    <div ng-show="divEmployeeTable">
+
+                        <table class="table table-striped" datatable="ng" ng-show="employeeTable" id="tableApproveQuestions">
+                            <thead style="color: white; background-color: #1cb5b0">
+                                <tr>
+                                    <th ng-hide="cellSurvey_For"></th>
+                                    <th> Name</th>
+                                    <th> Surname</th>
+                                    <th> Business Unit </th>
+                                    <th> Survey Status</th>
+                                    <th> Review</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="emp in Employees | filter: searchKeyword ">
+                                    <td ng-hide="cellSurvey_For"> {{emp.Survey_For}} </td>
+                                    <td> {{emp.First_Name}}</td>
+                                    <td> {{emp.Surname}} </td>
+                                    <td>{{emp.Team_Desc}}</td>                           
+                                    <td ng-if="emp.Verified == true" id="SurveyStatus"><a style="text-decoration:none"><h4><span class="label label-success">Verified</span></h4></a></td>
+                                    <td ng-if="emp.Verified == false" id="SurveyStatus"><a style="text-decoration:none"><h4><span class="label label-warning">Unverified</span></h4></a></td>
+                                    <td>
+                                        <a href="#" class="btn btn-info button-back-color" ng-click="LoadQuestionsPerEmployee(emp.Survey_For)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th ng-hide="cellSurvey_For"></th>
+                                    <th> Name</th>
+                                    <th> Surname</th>
+                                    <th> Business Unit </th>
+                                    <th> Survey Status</th>
+                                    <th> Review</th>
+                                </tr>
+                            </tfoot>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="alertBg" id="DivLoadingProgress">
+
+                <div class="loading-popup">
+
+                    <div id="loading" style="top:0vw; left:8%; position:relative">
+                    </div>
+
+                </div>
+
+            </div>
+
+        }
+
+
+    </div>
+
+</div>
+
+<script src="~/Scripts/CRUDScripts/Views/EmailNotification/EmailNotificationController.js"></script>
+
+<script src="~/Scripts/CRUDScripts/Views/EmailNotification/emailNoficationService.js"></script>

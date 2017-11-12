@@ -1,0 +1,268 @@
+﻿@model PA_System.Models.Survey
+@{
+    ViewBag.Title = "View Assigned Questions";
+}
+<div class="row">
+    <div class="col-xs-12">
+        <h3 class="page-header heading-text-color">
+            View Assigned Questions
+        </h3>
+    </div>
+
+</div>
+
+
+@*@{
+    var counter = 1;
+
+
+    foreach (var item in ViewBag.Questions)
+    {
+
+        @:<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="panel panel-info ">
+                <div class="panel-heading button-back-color" role="tab"  id="headingOne" style="text-align:left; background-color:#1cb5b0; color:white">
+                    
+                    
+                    
+                    <h4 class="panel-title">
+
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+
+                            <label class="text-left">@counter. @item.Question</label>
+                           
+
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                    <div class="panel-body">
+
+                        <div class="col-xs-12 col-md-6 col-lg-6">
+
+                            <label class="heading-text-color">Enter Response:</label>
+                            <div id="wmd-button-bar"></div>
+                            @Html.TextAreaFor(x => x.Question, new { @class = "form-control drop-down-border-color", style = "height:60px; width:40.8vw; max-width:none; resize:none" })
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        counter++;
+    }
+
+
+}
+
+
+
+@*<div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingTwo">
+            <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    Collapsible Group Item #2
+                </a>
+            </h4>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+            <div class="panel-body">
+                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingThree">
+            <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    Collapsible Group Item #3
+                </a>
+            </h4>
+        </div>
+        <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+            <div class="panel-body">
+                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+            </div>
+        </div>
+    </div>*@
+@*</div>*@
+@*@using (Html.BeginForm("ViewAssignedQuestions", "Rater", FormMethod.Post, new { @id = "formAssignedQuestions" }))
+{*@
+    <br />
+
+    <div class="col-xs-12 col-md-6 col-lg-9">
+
+        <div class="row">
+
+            <div class="col-xs-12">
+                         
+                <div ng-app="viewAssigned">
+
+                    <div ng-controller="assignedQuestionsController">
+
+                        <div class="alert alert-success" role="alert" style="display:none; padding-bottom:7px; padding-top:9px" id="saveApproveQuestionStatusAlert" ng-show="alertApproveQuestionSuccess">
+
+                            <i class="fa fa-check-circle alert-message" aria-hidden="true"></i> &nbsp;<label id="lblApproveQuestionSuccessAlert" ng-model="approveQuestionSuccessLabel">Survey Uploaded Successfully</label>
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        </div>
+
+
+                        <div class="alert alert-danger" role="alert" style="display:none; padding-bottom:7px; padding-top:9px" id="divApproveQuestionErrorMessageAlert" ng-show="divErrorMessage">
+
+                            <i class="fa fa-exclamation-circle" aria-hidden="true"></i> &nbsp;<label id="lblApproveQuestionErrorMessageAlert" ng-model="lblApproveQuestionErrorMessageAlert">Error occured, please try again</label>
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        </div>
+
+                        <div style="padding:5px">
+
+
+                            <div class="panel panel-success" ng-show="panelViewAssignedQuestionsSingleQuestion">
+
+                                <div class="panel-heading" style="text-align:left;">Approve / Reject Question</div>
+
+                                <div class="panel-body">
+
+                                    <label>Question</label>
+                                    <p id="question">{{Question}}</p>
+
+                                    <label>KPI Desc:</label>
+                                    <p id="kpiDesc" >{{KPIDesc}}</p>
+
+                                    <label>Raters</label>
+                                    <p id="ratersString">{{RatersString}}</p>
+
+
+                                </div>
+
+                            </div>
+
+                            <div ng-show="divEmployeeTable">
+
+                                <table class="table table-striped" datatable="ng" ng-show="employeeTable" id="tableApproveQuestions">
+                                    <thead style="color: white; background-color: #1cb5b0">
+                                        <tr>
+                                            <th> Name</th>
+                                            <th> Surname</th>
+                                            <th> Business Unit </th>
+                                            <th> Survey Status</th>
+                                            <th> Review</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="emp in Employees | filter: searchKeyword ">
+                                            <td> {{emp.EmployeeFirstName}}</td>
+                                            <td> {{emp.EmployeeSurname}} </td>
+                                            <td>{{emp.Department}}</td>
+                                            <td>Incomplete</td>
+                                            <td>
+                                                <a href="#" class="btn btn-info button-back-color" ng-click="LoadQuestionsPerEmployee(emp)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th> Name</th>
+                                            <th> Surname</th>
+                                            <th> Business Unit </th>
+                                            <th> Survey Status</th>
+                                            <th> Review</th>
+                                        </tr>
+                                    </tfoot>
+
+                                </table>
+
+                            </div>
+
+                            <div ng-show="tableViewAssignedQuestions">
+
+                                <table class="table table-striped" datatable="ng" ng-show="assignedQuestionsTable">
+                                    <thead style="color: white; background-color: #1cb5b0">
+                                        <tr>
+                                            <th> Question</th>
+                                            <th> Raters</th>
+                                            <th ng-hide="ViewQuestionKPI"> KPI Desc </th>
+                                            <th> Select Question</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="q in Questions">
+                                            <td style="width:57%"> {{q.Question}}</td>
+                                            <td> {{q.RatersString}} </td>
+                                            <td ng-hide="ViewQuestionKPI">{{q.KPIDesc}}</td>
+                                            <td style="width:200px;">
+                                                <a href="#" class="btn btn-info button-back-color" data-target="#Update" ng-click="GetSingleQuestion(q.Question)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                                @*<a href="#" class="btn btn-danger" id="btnDelete" data-toggle="modal" data-target="#deleteDialog" ng-click="get(emp)">Delete</a>*@
+                                            </td>
+                                        </tr>
+                                    </tbody>
+
+                                    <tfoot>
+                                        <tr>
+                                            <th> Question</th>
+                                            <th> Raters</th>
+                                            <th ng-hide="ViewQuestionKPI"> KPI Desc </th>
+                                            <th> Select Question</th>
+                                        </tr>
+                                    </tfoot>
+
+                                </table>
+
+                            </div>
+                            
+
+                        </div>
+                        <br />
+
+                        <div class="modal" id="Update" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h3 class="text-info">Survey Questions</h3>
+                                    </div>
+                                    <div class="modal-body">
+                                        @*Update Employee form starts here...*@
+                                        <form class="form-horizontal" name="UpdateEmployeeForm">
+                                            <div class="form-group">
+
+                                                <input class="form-control" readonly="readonly" name="EmpNo" ng-model="Question" type="hidden" placeholder="Question" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="text-info"> Question</label>
+                                                <input class="form-control" name="Question" ng-model="Question" type="text" placeholder="Question" />
+                                                <p>{{Question}}</p>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="text-info"> Raters</label>
+                                                <input class="form-control" name="Raters" ng-model="RatersString" type="number" placeholder="Raters" />
+                                                <p>{{RatersString}}</p>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="text-info"> KPI</label>
+                                                <input class="form-control" name="DeptName" ng-model="KPIDesc" type="text" placeholder="KPI" />
+                                                <p>{{KPIDesc}}</p>
+                                            </div>
+
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-success" id="btnUpdate" data-dismiss="modal" ng-click="update()">View</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+@*}*@
+<script src="~/Scripts/CRUDScripts/Module.js"></script>
+<script src="~/Scripts/CRUDScripts/Views/AssignedQuestions/Controller.js"></script>
+<script src="~/Scripts/CRUDScripts/Views/AssignedQuestions/Service.js"></script>

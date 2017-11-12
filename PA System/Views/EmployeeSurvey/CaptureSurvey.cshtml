@@ -1,0 +1,392 @@
+﻿@model PA_System.Models.QuestionnaireObject
+
+@{
+    ViewBag.Title = "Employee Data";
+}
+<div class="row">
+    <div class="col-xs-12">
+        <h3 class="page-header heading-text-color">
+            Capture Employee Survey Questions
+        </h3>
+    </div>
+
+</div>
+
+<div ng-app="capturequestionapp">
+
+    <div ng-controller="capturesurveycontroller">
+
+        @using (Html.BeginForm("CaptuteSurvey", "EmployeeSurvey", FormMethod.Post))
+        {
+           
+
+           
+
+            <div class="row">
+
+                <div class="panel panel-default drop-down-border-color" style="width:64vw; margin-left: 1.3em">
+                    <div ng-init="selectVal='Monthly'" />
+                    <div class="panel-body ">
+
+                        <input type="radio" name="period" value="Monthly" ng-model="selectVal" ng-click="ShowMonthly()" /><label class="heading-text-color"> Monthly</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="radio" name="period" value="Quartely" ng-model="selectVal" ng-click="ShowQuartely()" /><label class="heading-text-color"> Quartely</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="radio" name="period" value="Annually" ng-model="selectVal" ng-click="ShowAnnally()" /><label class="heading-text-color"> Annually</label>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-xs-12 col-md-6 col-lg-6" style="width:64vw; margin-left:-13px">
+                <div class="form-group">
+                    <div class="col-xs-12 col-md-6 col-lg-3" ng-show="divMonthly" ng-model="drpMonthly">
+                        <label class="heading-text-color">Select Month</label>
+                        <select ng-init="selectedMonth=MonthList[Month]" ng-model="selectedMonth" ng-options="item.Name for item in MonthList" ng-change="GetValue(selectedMonth);" class="form-control heading-text-color drop-down-border-color" style="max-width:none;">
+                            <option class="heading-text-color" value="" disabled selected>---Please Select---</option>
+                        </select>
+
+                    </div>
+
+                    <div class="col-xs-12 col-md-6 col-lg-3" ng-model="drpQuartely" ng-show="divQuartely">
+                        <label class="heading-text-color">Select Quarter</label>
+                        <select ng-init="selectedQuarter= QuartelyOptions[Quarter]" name="surveyOptionSelection" ng-model="selectedQuarter" ng-change="GetQuartelyValue(selectedQuarter)" ng-options="item.Name for item in QuartelyOptions" class="form-control heading-text-color drop-down-border-color" style="max-width:none;">
+                            <option class="heading-text-color" value="" disabled selected>---Please Select---</option>
+                        </select>
+
+                    </div>
+
+                    <div class="col-xs-12 col-md-6 col-lg-3" ng-show="divDivYearly" ng-model="drpAnnually">
+                        <label class="heading-text-color">Select Year</label>
+                        <select ng-init="selectedYear= YearList[Year].Name" ng-model="selectedYear" name="yearSurveyOptionSelection" ng-change="GetAnnualValue(selectedYear)" ng-options="item.Name for item in YearList" class="form-control heading-text-color drop-down-border-color" style="max-width:none;">
+                            <option class="heading-text-color" value="" disabled selected>---Please Select---</option>
+                        </select>
+
+                    </div>
+
+                    <div class="col-xs-12 col-md-6 col-lg-3">
+                        <label class="heading-text-color">Due Date</label>
+
+                        <input id="txtDueDate" class="form-control heading-text-color drop-down-border-color" type="date" style="max-width:none;" />
+
+                    </div>
+
+                    <div class="col-xs-12 col-md-6 col-lg-2">
+
+                    </div>
+
+                </div>
+            </div>
+
+
+
+            @*<div class="col-xs-12 col-md-3 col-lg-3" ng-show="divMonthly" ng-model="drpMonthly" style="margin-left:-0.7em">
+
+                    <label class="heading-text-color">Select Month</label>
+                    <select id="optMonth" ng-init="selectedmonth=MonthList[Month]" ng-model="selectedMonth" ng-options="item.Name for item in MonthList" class="form-control heading-text-color drop-down-border-color" style="max-width:none;"></select>
+
+                </div>*@
+
+            @*<br />*@
+
+            @*<div class="col-xs-12 col-md-3 col-lg-3" ng-model="drpQuartely" ng-show="divQuartely" style="margin-left:-0.7em">
+
+                    <label class="heading-text-color">Select Quarter</label>
+                    <select ng-init="selectedQuarter= QuartelyOptions[Quarter]" id="optSurveyOption" name="surveyOptionSelection" ng-model="selectedQuarter" ng-options="item.Name for item in QuartelyOptions" class="form-control heading-text-color drop-down-border-color" style="max-width:none;"></select>
+
+                </div>*@
+
+            @*<div class="col-xs-12 col-md-3 col-lg-3" ng-show="divDivYearly" ng-model="drpAnnually" style="margin-left:-0.7em">
+
+                    <label class="heading-text-color">Select Year</label>
+                    <select ng-init="selectedYear= YearList[Year].Name" id="optYear" ng-model="selectedYear" name="yearSurveyOptionSelection" ng-options="item.Name for item in YearList" class="form-control heading-text-color drop-down-border-color" style="max-width:none;"></select>
+
+                </div>*@
+
+            @*<div class="col-xs-12 col-md-3 col-lg-3" style="margin-left:5vw;">*@
+            @*<div class="col-xs-12 col-md-3 col-lg-3" style="margin-left:6em">
+
+                    <label class="heading-text-color">Due Date</label>
+
+                    <input id="txtDueDate" class="form-control heading-text-color drop-down-border-color" type="date" />
+
+                </div>*@
+
+
+            <br />
+            <br />
+            <div class="col-xs-12 col-md-6 col-lg-6" style="width:64vw; margin-left:-13px">
+
+                <div class="form-group">
+
+                    <div class="col-xs-12 col-md-6 col-lg-3">
+                        <label class="heading-text-color">Select Department</label>
+                        <select ng-init="selectedQuestion=DepartmentList[0]" ng-model="selectedQuestion" ng-options="item for item in DepartmentList" ng-change="GetEmployeeInformation(selectedQuestion)" class="form-control heading-text-color drop-down-border-color">
+                            <option class="heading-text-color" value="" disabled selected>---Please Select---</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-md-6 col-lg-3">
+                        <label class="heading-text-color">Select Ratee</label>
+                        <select ng-init="selectedEmployee=Employees[0].EmployeeNumber" ng-model="selectedEmployee" ng-options="item.DisplayName for item in Employees" class="form-control heading-text-color drop-down-border-color" required>
+                            <option class="heading-text-color" value="" disabled selected>---Please Select---</option>
+                        </select>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+            @*<div class="col-xs-12 col-md-6 col-lg-3" style="width:64vw;">*@
+
+            @*<label class="heading-text-color">Select Ratee</label>*@
+            @*<select id="drpRaters" class="form-control drop-down-border-color" style="max-width:none; width:40.8vw;">
+                    <option value="0">---Please Select---</option>
+                </select>*@
+            @*<select ng-init="selectedEmployee=Employees[0].EmployeeNumber" ng-model="selectedEmployee" ng-options="item.DisplayName for item in Employees" class="form-control heading-text-color drop-down-border-color" style="max-width:none; width:40.8vw;">
+                    <option class="heading-text-color" value="0" disabled selected>---Please Select---</option>
+                </select>*@
+
+            @*</div>*@
+
+            <div class="col-xs-12 col-md-6 col-lg-6">
+
+                <div class="col-xs-12 col-md-6 col-lg-6">
+                    @Html.HiddenFor(c => c.RateeName)
+
+                    <input type="hidden" id="QuestionnairePeriodType" name="QuestionnairePeriodType" ng-value="QuestionnairePeriodType" ng-model="QuestionnairePeriodType">
+                    <input type="hidden" id="QuestionnairePeriodValue" name="QuestionnairePeriodValue" ng-value="QuestionnairePeriodValue" ng-model="QuestionnairePeriodValue">
+                    
+                </div>
+            </div>
+
+            <div ng-show="saveCaptureSurveyStatusAlert">
+
+                <div class="alert alert-success" role="alert" style="width:64vw; margin-left:17px; margin-top:6%; margin-bottom:-5%; padding:6px 0px 6px 0px" id="saveCaptureSurveyStatusAlert" >
+
+                    <i class="fa fa-check-circle alert-message" aria-hidden="true"></i> &nbsp;<label id="lblCaptureSurveySuccessAlert">Question saved Successfully</label>
+                    <a class="close" data-dismiss="alert" href="#">x</a>
+                </div>
+
+            </div>
+
+            <div class="row" ng-show="divCaptureSurveyErrorMessageAlert">
+                <input type="hidden" id="errorText" name="errorMessage" ng-value="errorMessage" ng-model="errorMessage">
+                <div class="alert alert-danger" role="alert" style="width:64vw; margin-left:31px; margin-top:83px; margin-bottom:-5%; padding:6px 0px 6px 0px" id="divCaptureSurveyErrorMessageAlert">
+
+                    <i class="fa fa-times alert-danger" aria-hidden="true"></i> &nbsp;<label id="lblCaptureSurveyErrorMessageAlert">{{errorMessage}}</label>
+                    <a class="close" data-dismiss="alert" href="#">x</a>
+                </div>
+
+            </div>
+
+            <div class="panel panel-success" id="panelQuestionEntry" style="width:64vw; margin-top:5vw;  margin-left:16px">
+
+                <div class="panel-heading">
+
+                    <h3 style="text-align:left" class="panel-title">Employee Survey</h3>
+
+                </div>
+
+                <div class="panel-body">
+
+                    <div class="form-group" id="clientInfo">
+
+                        <div class="col-xs-12 col-md-8 col-lg-9">
+
+                            <div class="row">
+
+                                <div class="col-xs-12 col-md-6 col-lg-3">
+
+                                    <label class="heading-text-color">Select a Question</label>
+                                    @*<select id="drpQuestion" class="form-control drop-down-border-color" style="max-width:none; width:40.8vw;">
+                                            <option value="0">---Please Select---</option>
+                                        </select>*@
+                                    <select id="SurveyQuestion" ng-init="selectedOption=Questions[0].Question" ng-model="selectedOption" ng-options="item.Question for item in Questions" class="form-control heading-text-color drop-down-border-color" style="max-width:none; width:40.8vw;">
+                                        <option class="heading-text-color" value="" disabled selected>---Please Select---</option>
+                                    </select>
+
+
+
+                                </div>
+                                <div class="span12" style="right:19vw; top:33px; position: absolute">
+                                    @*<i class="fa fa-pencil-square-o" aria-hidden="true"></i>*@
+                                    @*<button type="button" class="btn btn-success"><span class="fa btn"></span></button>*@
+                                    @*<a id="btnAddNewQuestion" type="button" class="btn icon-btn button-back-color" href="#" ng-model="btnShowQuestionInput" ng-click="ShowDivQuestion()" style="right:-174vw; position:inherit; top:-8px; border-radius:35px">
+                                            <span class="fa fa-plus-circle  text-success" style="font-size:medium; color:white;"></span>
+                                            Add
+                                        </a>*@
+
+                                    <input type="button" ng-click="ShowDivQuestion()" class="btn icon-btn button-back-color" value="Add New" style="right:-20vw; position:inherit; top:-15px; border-radius:35px">
+
+                                    @*<a id="btnCancel" class="btn icon-btn button-back-color" href="#" style="right:-17vw; position:inherit; top:-8px; border-radius:35px">
+                                            <span class="fa fa-plus-circle  text-success" style="font-size:medium; color:white;"></span>
+                                            Add
+                                        </a>*@
+                                </div>
+
+
+                            </div>
+
+                            <div class="row" id="divNewQuestion">
+
+                                <div class="col-xs-12 col-md-6 col-lg-6" ng-show="NewQuestion">
+
+                                    <label class="heading-text-color">Enter a Question</label>
+                                    @*@Html.TextAreaFor(x => x.Question, new { @class = "form-control drop-down-border-color", style = "height:60px; width:40.8vw; max-width:none; resize:none" })*@
+                                    <textarea rows="10" cols="100" ng-model="Question" style="height:60px; width:40.8vw; max-width:none; resize:none" class="form-control drop-down-border-color" ng-keyup="DisableSaveButton()" placeholder="Enter your response here"></textarea>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="row">
+
+                                <div class="col-xs-12 col-md-6 col-lg-3">
+
+                                    <label class="heading-text-color">Select KPI</label>
+                                    @*<select id="drpKPI" class="form-control drop-down-border-color" style="max-width:none; width:40.8vw;">
+                                            <option value="0">---Please Select---</option>
+                                        </select>*@
+                                    <select id="KPIDesc" ng-init="selectedKPIOption=Questions[0].KPIDesc" ng-model="selectedKPIOption" ng-options="item.KPIDesc for item in KPIs" class="form-control heading-text-color drop-down-border-color" style="max-width:none; width:40.8vw">
+                                        <option class="heading-text-color" value="" disabled selected>---Please Select---</option>
+                                    </select>
+
+                                </div>                              
+
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-xs-12 col-md-6 col-lg-3" style="width:42.5vw">
+
+                                    <label class="heading-text-color">Select Rater(s)</label>
+
+                                    <input type="hidden" class="hidden" id="raterList" />
+                                    <input type="text" id="selectedRatersString" name="raterString" ng-model="raterStringModel" ng-show="selectedRatersList" style="max-width:none; width:40.8vw"/>
+                                    <select id="drpRater" class="form-control drop-down-border-color  multiple" ng-model="drpSelectedRaters">
+                                        <option value="">--Please Select---</option>
+                                    </select>
+
+                                </div>
+
+                            </div>
+
+                            <br />
+                            <input type="hidden" id="errorText" name="errorMessage" ng-value="numberOfQuestions" ng-model="numberOfQuestions">
+                            <p style="font-size:x-large">
+                                <string>Question {{numberOfQuestions}} of 30</string>
+                                <br />
+                                <br />
+                            </p>
+                           
+                            <div style="max-width:none; width:58vw; margin-left:5px">
+
+                                <div ng-show="divShowQuestions">
+
+                                    <table class="table table-striped display" datatable="ng">
+                                        <thead style="color:white; background-color: #1cb5b0">
+                                            <tr>
+                                                <th> Question</th>
+                                                <th>Raters</th>
+                                                <th> KPI Desc </th>
+                                                <th>Edit</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="q in EnteredQuestions | filter: searchKeyword">
+                                                <td> {{q.Question}}</td>
+                                                <td> {{q.RatersString}}</td>
+                                                <td>{{q.KPIDesc}}</td>
+                                                <td style="width:200px;">
+                                                    <a href="#" class="btn btn-info button-back-color" ng-click="LoadQuestions()"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+
+                                        <tfoot>
+                                            <tr>
+                                                <th>Question</th>
+                                                <th>Raters</th>
+                                                <th> KPI Desc </th>
+                                                <th>Edit</th>
+                                            </tr>
+                                        </tfoot>
+
+                                    </table>
+
+                                </div>
+
+                                @*<div class="col-xs-12">
+
+                                        <table class="table table-striped" id="tableEnteredQuestions">
+                                            <thead style="color: white; background-color: #1cb5b0">
+                                                <tr>
+
+                                                    <th>Question</th>
+                                                    <th>Raters</th>
+                                                    <th>KPI Desc</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tfoot>
+                                                <tr>
+
+                                                    <th>Question</th>
+                                                    <th>Raters</th>
+                                                    <th>KPI Desc</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+
+                                    </div>*@
+                            </div>
+
+                        </div>
+
+                    </div>
+                   
+
+                    <div class="col-xs-12 col-md-3 col-lg-3">
+
+                        <div class="form-group">
+                            <label></label>
+                            <label></label>
+                            <label></label>
+                            <div class="col-xs-12 col-md-3 col-lg-9" id="divSaveCancelQuestions">
+                                <input type="button" id="btnSaveQuestion" value="Save" data-ng-click="SaveNewQuestion(raterStringModel)" class="btn btn-block button-back-color" />
+
+                                @*<input type="button" id="btnSaveQuestion" value="Save" class="btn btn-block button-back-color" />*@
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <br />
+                    <br />
+
+                    <div class="col-xs-12 col-md-3 col-lg-3" ng-show="SubmitSurvey">
+
+                        <div class="form-group">
+                            <label></label>
+                            <label></label>
+                            <label></label>
+
+                            <div class="col-xs-12 col-md-3 col-lg-9" id="saveClient">
+                                <input type="submit" id="btnSubmitSurvey" value="Submit" class="btn btn-block btn-success" />
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+
+
+</div>
+
+<script type="text/javascript" src="~/Scripts/CRUDScripts/Views/CompleteSurvey/captureSurvey.js"></script>
+<script type="text/javascript" src="~/Scripts/CRUDScripts/Views/CompleteSurvey/captureQuestionService.js"></script>

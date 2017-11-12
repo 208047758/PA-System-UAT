@@ -1,0 +1,245 @@
+﻿@model PA_System.Models.QuestionnaireObject
+@{
+    ViewBag.Title = "Employee Surveys";
+}
+<div class="row">
+    <div class="col-xs-12">
+        <h3 class="page-header heading-text-color">
+            Upload Employee Survey
+        </h3>
+    </div>
+
+</div>
+
+
+@using (Html.BeginForm("UploadEmployeeSurvey", "EmployeeSurvey", FormMethod.Post, new { @id = "formApproveAsurvey", enctype = "multipart/form-data" }))
+{
+    <div class="col-xs-12 col-md-6 col-lg-9">
+
+        @Html.HiddenFor(c => c.QuestionnairePeriodType)
+        @Html.HiddenFor(c => c.QuestionnairePeriodValue)
+
+
+        <input type="hidden" id="ErrorMessage" />
+        <input type="hidden" id="surveyPeriod" />
+        <input type="hidden" name="surveyPeriodValue" />
+
+        @Html.HiddenFor(c => c.UploadStatus)
+
+        <div class="row">
+
+            <div class="alert alert-warning" role="alert" style="width:65%; padding-bottom:7px; padding-top:9px" id="divSurveySheetName">
+
+                <i class="fa fa-info-circle alert-message" aria-hidden="true"></i> &nbsp;<label id="lblSurveySheetName">Please remeber to rename sheet name to employee's full name prior uploading a survey</label>
+
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="alert alert-success" role="alert" style="display:none; width:65%; padding-bottom:7px; padding-top:9px" id="saveSurveryStatusAlert">
+
+                <i class="fa fa-check-circle alert-message" aria-hidden="true"></i> &nbsp;<label id="lblSuccessAlert">Survey Uploaded Successfully</label>
+
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="alert alert-danger" role="alert" style="display:none; width:65%; padding-bottom:7px; padding-top:9px" id="divErrorMessageAlert">
+
+                <i class="fa fa-exclamation-triangle alert-message" aria-hidden="true"></i> &nbsp;<label id="lblErrorMessageAlert">Error occured, please try again</label>
+
+            </div>
+
+        </div>
+
+        <div class="alert alert-warning" role="alert" style="width:65%; padding-bottom:7px; padding-top:9px" id="alertTotalNumberOfQuestionsError">
+
+            <i class="fa fa-exclamation-triangle alert-message" aria-hidden="true"></i> &nbsp;<label id="lblAlertTotalNumberOfQuestionsError"></label>
+
+        </div>
+
+        <div class="alert alert-success" role="alert" style="width:65%; padding-bottom:7px; padding-top:9px" id="alertTotalNumberOfQuestionsSuccess">
+
+            <i class="fa fa-check-circle alert-message" aria-hidden="true"></i> &nbsp;<label id="lblAlertTotalNumberOfQuestionsSuccess">Error occured, please try again</label>
+
+        </div>
+
+        <div class="row">
+            <div style="margin-left:0px">
+                <i class="fa fa-download heading-text-color" aria-hidden="true"></i>
+                @Html.ActionLink("Download Survey Template", "DownloadTemplate")
+
+            </div>
+        </div>
+
+        <br />
+
+        <div class="row">
+
+            <label class="heading-text-color">Accepted file types .xlsx, .xls, .xlsm</label>
+
+            <div class="panel panel-default drop-down-border-color" style="width:65%">
+
+                <div class="panel-body ">
+
+                    <label class="heading-text-color"><input type="radio" name="surveyOption" id="optMonthSurvey" checked />Monthly</label>
+
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <label class="heading-text-color"><input type="radio" name="surveyOption" id="optQuarterlySurvey" data-toggle="tooltip" />Quarterly</label>
+
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <label class="heading-text-color"><input type="radio" name="surveyOption" id="optYearlySurvey" />Annually</label>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        @*<div class="row">
+
+            <label class="heading-text-color">Select Ratee</label>
+            @Html.DropDownListFor(x => x.RateeName, new SelectList(ViewBag.RaterList, "Name", "Name"), "Please Select", new { @class = "form-control drop-down-border-color", required = "required", style = "width:65%; max-width:none" })
+
+            <br />
+
+        </div>*@
+
+        <div class="row" id="divFileUpload">
+
+            <div class="col-xs-12 col-md-3 col-lg-3" style="padding:5px;">
+
+                <label class="heading-text-color">Upload file</label>
+                <label class="btn btn-default btn-flex drop-down-border-color">
+                    <i class="fa fa-upload heading-text-color" aria-hidden="true"></i>&nbsp;&nbsp;
+                    <label id="fileUploadCaption" style="font-weight:normal">Choose excel file..... </label>
+
+                    <input type="file" id="fileUploadClientFile" name="fileUploadClientFile" value="select a file" class="custom-file-input heading-text-color" style="display: none;" />
+                </label>
+            </div>
+
+            <div class="col-xs-12 col-md-3 col-lg-3" id="divMontlySurveyOption" style="padding:5px;">
+
+                <label class="heading-text-color">Select Month</label>
+                <select name="Month" id="optMonth" class="form-control drop-down-border-color">
+                    <option value="0" class="heading-text-color">--Please select--</option>
+                    <option value="1" class="heading-text-color">January</option>
+                    <option value="2" class="heading-text-color">February</option>
+                    <option value="3" class="heading-text-color">March</option>
+                    <option value="4" class="heading-text-color">April</option>
+                    <option value="5" class="heading-text-color">May</option>
+                    <option value="6" class="heading-text-color">June</option>
+                    <option value="7" class="heading-text-color">July</option>
+                    <option value="8" class="heading-text-color">August</option>
+                    <option value="9" class="heading-text-color">September</option>
+                    <option value="10" class="heading-text-color">October</option>
+                    <option value="11" class="heading-text-color">November</option>
+                    <option value="12" class="heading-text-color">December</option>
+                </select>
+
+            </div>
+
+            <div class="col-xs-12 col-md-3 col-lg-3" id="divQuartelySureyOption" style="padding:5px;">
+
+                <label class="heading-text-color">Select Quarter</label>
+
+                <select name="surveyOptionSelection" id="optSurveyOption" class="form-control drop-down-border-color">
+                    <option value="0" class="heading-text-color">--Please select--</option>
+                    <option value="1" class="heading-text-color">1st Quarterly</option>
+                    <option value="2" class="heading-text-color">2nd Quarterly</option>
+                    <option value="3" class="heading-text-color">3rd Quarterly</option>
+                    <option value="4" class="heading-text-color">4th Quarterly</option>
+                </select>
+
+            </div>
+
+            <div class="col-xs-12 col-md-3 col-lg-3" id="divYearSureyOption" style="padding:5px;">
+
+                <label class="heading-text-color">Select Year</label>
+
+                <select name="yearSurveyOptionSelection" id="optYear" class="form-control drop-down-border-color heading-text-color">
+                    @*<option value="0" class="heading-text-color">--Please select--</option>*@
+                    <option value="1" class="heading-text-color" selected>2016</option>
+                    <option value="2" class="heading-text-color">2016</option>
+                </select>
+
+            </div>
+
+            <div class="col-xs-12 col-md-3 col-lg-3" id="submitClientInfo" style="padding:5px;">
+                <label></label>
+                <label></label>
+                <input type="submit" id="btnUpload" value="Submit" class="btn btn-block button-back-color" style="width:61%" disabled="disabled" />
+            </div>
+
+        </div>
+
+        <br />
+
+
+        @*<table id="entry-grid" datatable=""  dt-options="dtOptions" dt-columns="dtColumns" class="table table-striped"></table>*@
+        <div class="row" style="margin-left:-23px">
+
+            <div class="col-xs-12" style="width:100%; margin-left: 0px;" id="divPreviewtable">
+
+                <table class="table table-striped" id="previewQuestionsTable">
+                    <thead>
+                        <tr>
+
+                            <th>Question</th>
+                            <th>Raters</th>
+
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Question</th>
+                            <th>Raters</th>
+                        </tr>
+                    </tfoot>
+                </table>
+
+            </div>
+
+        </div>
+
+        <div class="modal fade" id="modalQuestionPreview" aria-hidden="true" tabindex="-1" role="dialog" data-backdrop="static">
+            <div class="modal-dialog">
+                <div class="modal-content" style="margin-top:322px; width:0px; border:none">
+                    @*<div class="modal-header button-back-color">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title white-text-color" id="myModalLabel">Edit Field Information<span id="#"></span></h4>
+                    </div>*@
+                    <div class="modal-body">
+                    
+                        <div class="row">
+
+                            <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+                            <center>  <span class="sr-only">Loading...</span></center>
+                        </div>
+
+
+                        </div>
+
+                    </div>
+
+                    @*<div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" id="closeModalControl">Close</button>
+                        <button type="button" class="btn btn-success button-back-color" id="btnUpdateField">Update</button>
+
+                    </div>*@
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+    <div>
+
+    </div>
+}

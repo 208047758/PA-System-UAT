@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "Rating Report";
+}
+<div class="row">
+    <div class="col-xs-12">
+        <h3 class="page-header heading-text-color">
+            Extract Rating Report
+        </h3>
+    </div>
+</div>
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title></title>
+    </head>
+    <body>
+        @using (Html.BeginForm("ViewRatingReport", "RatingReport", FormMethod.Post))
+        {
+            <form method="post" action="/RatingReport/ViewRatingReport" id="extract">
+                <div>
+                    <div class="panel panel-default drop-down-border-color">
+
+                        <div class="panel-body">
+                            <label class="heading-text-color">Do you want to include the Employee Name in the report?</label>
+                            &nbsp;&nbsp;&nbsp;
+                            <label class="heading-text-color"><input type="radio" name="yes" id="yes" checked />Yes</label>
+
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <label class="heading-text-color"><input type="radio" name="no" id="no" />No</label>
+
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label></label>
+                        <label></label>
+                        <label></label>
+                        <div class="col-xs-12 col-md-3 col-lg-12">
+                            <input type="submit" name="action" id="action" value="Extract Rating Report" class="btn btn-block button-back-color" />
+                        </div>
+
+                    </div>
+
+                </div>
+            </form>
+        }
+    </body>
+    </html>
+

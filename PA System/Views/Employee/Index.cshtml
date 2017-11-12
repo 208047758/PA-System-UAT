@@ -1,0 +1,187 @@
+﻿
+@{
+    ViewBag.Title = "Mitechdev.com";
+}
+
+<style>
+    input, label {
+        margin-left: 20px;
+    }
+</style>
+
+@*Display Employee datain Table format*@
+
+<div class="container" ng-app="myangularapp" ng-controller="crudcontroller">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            Angular Grid
+        </div>
+        <div class="panel-body">
+            <button type="button" class="btn btn-info" data-target="#AddNew" data-toggle="modal">Add New</button><br />
+
+            @*New record Modal addition..*@
+
+            <div class="modal" id="AddNew" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h3 class="text-info">Add New Employee</h3>
+                        </div>
+                        <div class="modal-body">
+                            @*Add New Employee form starts here...*@
+                            <form class="form-horizontal" name="AddNewForm">
+                                <div class="form-group">
+
+                                    <input class="form-control" readonly="readonly" name="EmpNo" ng-model="EmpNo" type="hidden" placeholder="Employee Number" required />
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-info"> Employee Name</label>
+                                    <input class="form-control" name="EmpName" ng-model="EmpName" type="text" placeholder="Employee Name" required />
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-info"> Salary</label>
+                                    <input class="form-control" name="Salary" ng-model="Salary" type="number" placeholder="Salary" required />
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-info"> Dept Name</label>
+                                    <input class="form-control" name="DeptName" ng-model="DeptName" type="text" placeholder="Dept Name" required />
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-info"> Designation</label>
+                                    <input class="form-control" name="Designation" ng-model="Designation" type="text" placeholder="Designation" required />
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success" id="btnSave" data-dismiss="modal" ng-click="save()">Save</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*Employee Records*@
+
+        <table class="table table-bordered">
+            <thead style="background-color:lightgreen;">
+                <tr>
+                    <th> Emp Name</th>
+                    <th> Emp Name</th>
+                    <th>Salary </th>
+                    <th>Dept Name</th>
+                    <th>Designation</th>
+                    <th> Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="emp in Employees">
+                    <td> {{emp.EmpNo}}</td>
+                    <td> {{emp.EmpName}} </td>
+                    <td>{{emp.Salary}}</td>
+                    <td>{{emp.DeptName}}</td>
+                    <td>{{emp.Designation}}</td>
+                    <td style="width:200px;">
+                        <a href="#" class="btn btn-info" data-toggle="modal" data-target="#Update" ng-click="get(emp)">Update</a>
+                        <a href="#" class="btn btn-danger" id="btnDelete" data-toggle="modal" data-target="#deleteDialog" ng-click="get(emp)">Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="panel-footer">
+            Microsoft tech Developments
+        </div>
+
+        @*Upadate Employee records*@
+
+        <div class="modal" id="Update" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h3 class="text-info">Update Existing Employee</h3>
+                    </div>
+                    <div class="modal-body">
+                        @*Update Employee form starts here...*@
+                        <form class="form-horizontal" name="UpdateEmployeeForm">
+                            <div class="form-group">
+
+                                <input class="form-control" readonly="readonly" name="EmpNo" ng-model="UpdateEmpNo" type="hidden" placeholder="Employee Number" required />
+                            </div>
+                            <div class="form-group">
+                                <label class="text-info"> Employee Name</label>
+                                <input class="form-control" name="EmpName" ng-model="UpdateEmpName" type="text" placeholder="Employee Name" required />
+                            </div>
+                            <div class="form-group">
+                                <label class="text-info"> Salary</label>
+                                <input class="form-control" name="Salary" ng-model="UpdateSalary" type="number" placeholder="Salary" required />
+                            </div>
+                            <div class="form-group">
+                                <label class="text-info"> Dept Name</label>
+                                <input class="form-control" name="DeptName" ng-model="UpdateDeptName" type="text" placeholder="Dept Name" required />
+                            </div>
+                            <div class="form-group">
+                                <label class="text-info"> Designation</label>
+                                <input class="form-control" name="Designation" ng-model="UpdateDesignation" type="text" placeholder="Designation" required />
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" id="btnUpdate" data-dismiss="modal" ng-click="update()">Update</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*Delete Employee record*@
+
+        <div class="modal" role="dialog" id="deleteDialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h3 class="text-info">Are you sure you want to delete the record?</h3>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <p>EmpNo:{{UpdateEmpNo}}</p>
+                            <p>EmpName:{{UpdateEmpName}}</p>
+                            <p>Salary:{{UpdateSalary}}</p>
+                            <p>DeptName:{{UpdateDeptName}}</p>
+                            <p>Designation:{{UpdateDesignation}}</p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="delete(UpdateEmpNo)">Delete Record</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+<script src="~/Scripts/CRUDScripts/Module.js"></script>
+    <script src="~/Scripts/CRUDScripts/Controller.js"></script>
+    <script src="~/Scripts/CRUDScripts/Service.js"></script>
+    <script>
+    //sweet alert script starts here...
+    //document.querySelector("#btnSave").onclick = function () {
+    //    swal("Employee Record inserted successfully");
+    //}
+    //document.querySelector("#btnDelete").onclick = function () {
+    //    swal({
+    //        title: "Are you sure want to delete?",
+    //        text: "The record will be deleted permanetly",
+    //        type: "warning",
+    //        showCancelButton: true,
+    //        confirmButtonColor: "#DD6B55",
+    //        confirmButtonText: "Yes, delete it!"
+    //    });
+    //};
+    </script>

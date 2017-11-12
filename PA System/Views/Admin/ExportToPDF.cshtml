@@ -1,0 +1,69 @@
+﻿@model PA_System.Models.RatingReportModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html >
+<head>
+    <meta name="viewport" content="width=device-width" />
+    @*<link href="~/Content/css/Site.css" rel="stylesheet" />
+    <link href="~/Content/css/bootstrap.css" rel="stylesheet" />*@
+
+</head>
+<body >
+
+        <div id="divReportPerRater">
+
+            @Html.HiddenFor(c => c.Survey_For)
+
+            @Html.HiddenFor(c => c.IncludeRaters)
+           
+
+            <div id="ShowDetailsReport">
+
+                @{
+                    bool headerPrinted = false;
+
+                    if (Model.ReportList != null)
+                    {
+                        foreach (var item in Model.ReportList)
+                        {
+                            if (!headerPrinted)
+                            {
+                                <h6 style="color:#1cb5b0">Date Printed: @String.Format("{0:ddd, dd MMM yyyy}", DateTime.Now)</h6>
+                                <hr /><br />
+                                <h4 align="center" style="color:#1cb5b0"><strong> 360 DEGREE PERFORMANCE REVIEW REPORT FOR:  </strong><label id="lblSurveyForReport">@item.Survey_For</label></h4>
+                               <br />
+                                 <label id="lblSurveyForName"><strong></strong></label>
+                                <label id="lblRatingReportPeriod"><strong></strong></label>
+                 
+                          
+                                <h4 align="center" style="color:#1cb5b0"><strong>RATING SUMMARY (PER RATER)</strong></h4>
+
+                                headerPrinted = true;
+                              
+                            }
+
+                            <hr /><br />
+                            <h5 style="color:#1cb5b0; font-size:10px;"><label style="color:#1cb5b0"> Question: &nbsp;&nbsp;</label></h5><label style="color:#464e55; ">@item.Question</label>
+                            <label id="lblQuestion" style="color:#1cb5b0"></label><br />
+                            <label style="color:#1cb5b0">Minimum Rating: &nbsp;</label><label id="lblMinimumRating" style="color:#464e55; ">@item.Min_Rating    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;</label>
+                            <label style="color:#1cb5b0">Maximum Rating: &nbsp;</label><label id="lblMaximumRating" style="color:#464e55; ">@item.Max_Rating    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;</label>
+                            <label style="color:#1cb5b0">Average Rating: &nbsp;</label><label id="lblMinimumRating" style="color:#464e55; ">@item.Avg_Overall_Rating</label>
+                            <br />
+                            <div id="divShowRatersDetailsReport">
+                                <label style="color:#1cb5b0">@item.Rater </label><label></label><br />
+                                <label style="color:#1cb5b0">Comment: &nbsp;</label><label style="color:#464e55;"> @item.Rater_Comment</label><label></label><br />
+                                <label style="color:#1cb5b0">Rating: &nbsp;</label><label style="color:#464e55;"> @item.Rating</label><label></label><br />
+                            </div>
+
+                        }
+                }
+                }
+            </div>
+        </div>
+  
+</body>
+</html>

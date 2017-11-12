@@ -1,0 +1,35 @@
+C:\Users\Andile\Documents\SourceCode\PA System-UAT\PA Tests\bin\Debug\PA Tests.exe.config
+C:\Users\Andile\Documents\SourceCode\PA System-UAT\PA Tests\bin\Debug\PA Tests.exe
+C:\Users\Andile\Documents\SourceCode\PA System-UAT\PA Tests\bin\Debug\PA Tests.pdb
+C:\Users\Andile\Documents\SourceCode\PA System-UAT\PA Tests\bin\Debug\FluentAssertions.Core.dll
+C:\Users\Andile\Documents\SourceCode\PA System-UAT\PA Tests\bin\Debug\FluentAssertions.dll
+C:\Users\Andile\Documents\SourceCode\PA System-UAT\PA Tests\bin\Debug\FluentAutomation.Core.dll
+C:\Users\Andile\Documents\SourceCode\PA System-UAT\PA Tests\bin\Debug\FluentAutomation.SeleniumWebDriver.dll
+C:\Users\Andile\Documents\SourceCode\PA System-UAT\PA Tests\bin\Debug\Ionic.Zip.dll
+C:\Users\Andile\Documents\SourceCode\PA System-UAT\PA Tests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Users\Andile\Documents\SourceCode\PA System-UAT\PA Tests\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Andile\Documents\SourceCode\PA System-UAT\PA Tests\bin\Debug\nunit.framework.dll
+C:\Users\Andile\Documents\SourceCode\PA System-UAT\PA Tests\bin\Debug\WebDriver.dll
+C:\Users\Andile\Documents\SourceCode\PA System-UAT\PA Tests\bin\Debug\WebDriver.Support.dll
+C:\Users\Andile\Documents\SourceCode\PA System-UAT\PA Tests\bin\Debug\xunit.abstractions.dll
+C:\Users\Andile\Documents\SourceCode\PA System-UAT\PA Tests\bin\Debug\xunit.assert.dll
+C:\Users\Andile\Documents\SourceCode\PA System-UAT\PA Tests\bin\Debug\xunit.core.dll
+C:\Users\Andile\Documents\SourceCode\PA System-UAT\PA Tests\bin\Debug\xunit.execution.desktop.dll
+C:\Users\Andile\Documents\SourceCode\PA System-UAT\PA Tests\bin\Debug\FluentAssertions.pdb
+C:\Users\Andile\Documents\SourceCode\PA System-UAT\PA Tests\bin\Debug\FluentAssertions.xml
+C:\Users\Andile\Documents\SourceCode\PA System-UAT\PA Tests\bin\Debug\FluentAssertions.Core.pdb
+C:\Users\Andile\Documents\SourceCode\PA System-UAT\PA Tests\bin\Debug\FluentAssertions.Core.xml
+C:\Users\Andile\Documents\SourceCode\PA System-UAT\PA Tests\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Andile\Documents\SourceCode\PA System-UAT\PA Tests\bin\Debug\nunit.framework.xml
+C:\Users\Andile\Documents\SourceCode\PA System-UAT\PA Tests\bin\Debug\WebDriver.xml
+C:\Users\Andile\Documents\SourceCode\PA System-UAT\PA Tests\bin\Debug\WebDriver.Support.xml
+C:\Users\Andile\Documents\SourceCode\PA System-UAT\PA Tests\bin\Debug\xunit.abstractions.xml
+C:\Users\Andile\Documents\SourceCode\PA System-UAT\PA Tests\bin\Debug\xunit.assert.pdb
+C:\Users\Andile\Documents\SourceCode\PA System-UAT\PA Tests\bin\Debug\xunit.assert.xml
+C:\Users\Andile\Documents\SourceCode\PA System-UAT\PA Tests\bin\Debug\xunit.core.pdb
+C:\Users\Andile\Documents\SourceCode\PA System-UAT\PA Tests\bin\Debug\xunit.core.xml
+C:\Users\Andile\Documents\SourceCode\PA System-UAT\PA Tests\bin\Debug\xunit.execution.desktop.pdb
+C:\Users\Andile\Documents\SourceCode\PA System-UAT\PA Tests\bin\Debug\xunit.execution.desktop.xml
+C:\Users\Andile\Documents\SourceCode\PA System-UAT\PA Tests\obj\Debug\PA Tests.csprojResolveAssemblyReference.cache
+C:\Users\Andile\Documents\SourceCode\PA System-UAT\PA Tests\obj\Debug\PA Tests.exe
+C:\Users\Andile\Documents\SourceCode\PA System-UAT\PA Tests\obj\Debug\PA Tests.pdb

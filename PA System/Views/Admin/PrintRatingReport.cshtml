@@ -1,0 +1,197 @@
+﻿@model PA_System.Models.RatingReportModel
+@{
+    ViewBag.Title = "Print Rating Report";
+}
+<div class="row">
+    <div class="col-xs-12">
+        <h3 class="page-header heading-text-color">
+            Print Rating Report
+        </h3>
+    </div>
+
+</div>
+
+@using (Html.BeginForm("PrintRatingReport", "Admin", FormMethod.Post, new { @id = "fromPrintRatingReport" }))
+{
+    <div ng-app="printReportApp">
+
+        <div ng-controller="adminController">
+
+            <div class="col-xs-12 col-md-6 col-lg-9">
+
+                @*<div class="alert alert-success" role="alert" id="divRatingReportSuccessAlert">
+
+                        <i class="fa fa-check-circle alert-message" aria-hidden="true"></i> &nbsp;<label id="lblRatingReportSuccess" ng-model="responseQuestionSuccessLabel">Response saved succesfully</label>
+
+                    </div>*@
+
+                <div class="alert alert-warning" role="alert" id="divRatingReportSuccessWariningError">
+
+                    <i class="fa fa-exclamation-triangle alert-message" aria-hidden="true"></i> &nbsp;<label id="lblRatingReportErrorAlert"></label>
+
+                </div>
+
+                @Html.HiddenFor(c => c.Survey_For)
+
+                @*@Html.TextBoxFor(c => c.SelectedName)*@
+
+                @Html.HiddenFor(c => c.IncludeRaters)                
+
+                <label class="heading-text-color">Please Select a filter/search option below</label>
+
+                <div class="panel panel-default drop-down-border-color" style="max-width:none; width:56.7vw">
+
+                    <div class="panel-body ">
+
+                        @*<label class="heading-text-color"><input type="radio" ng-init="surveyStatus=FALSE" ng-model="All" name="surveyStatus" ng-click="ShowAll()" id="optAll" ng-value="TRUE" checked="checked" />All</label>*@
+
+                        @*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*@
+                        <label class="heading-text-color"><input type="radio" ng-model="ByRater" ng-click="ShowRaterDiv()" name="surveyStatus" id="optRaterName" ng-view="FALSE" />By Employee</label>
+
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <label class="heading-text-color"><input type="radio" ng-model="byDepartment" name="surveyStatus" id="optDepartment" ng-value="FALSE" ng-click="ShowDepartmentDiv()" data-toggle="tooltip" />By Business Unit</label>
+                    </div>
+
+                </div>
+
+                <div id="divShowraters" ng-show="divIncludeRaters" ng-model="ModelShowRaters">
+
+                    <input type="checkbox" ng-model="ModelIncluderaters" id="chkIncludeRaters" name="chkShowRaters" ng-change="ShowReportWithRaters()" value="Include Raters" style="font-size:medium" /><label class="heading-text-color"> Include Raters</label>
+
+                </div>
+                <br />
+
+                <div class="row" ng-show="divShowDepartmentFilter">
+
+                    <div class="col-xs-12 col-md-6 col-lg-6">
+
+                        <label class="heading-text-color">Select Business Unit</label>
+
+                        <select ng-model="BusinessUnit" id="drpBusinessUnit" ng-options="DepartmentDropDown.Name for DepartmentDropDown in DepartmentList track by DepartmentDropDown.Value" ng-change="ShowReportWithRatersPerBusinessUnit()" class="form-control drop-down-border-color heading-text-color" style="max-width:none; width:56.7vw">
+                            <option class="heading-text-color" value="" disabled selected>---Please Select---</option>
+                        </select>
+                    </div>
+
+                </div>
+
+             
+
+                <div class="row" ng-show="divShowRaters">
+
+                    <div class="col-xs-12 col-md-6 col-lg-6">
+
+                        <label class="heading-text-color">Please Select an Employee Below</label>
+
+                        <select ng-init="Rater=RaterStatusList[0]" id="optReportRater" name="rater" ng-options="item.Survey_For for item in RaterStatusList" ng-change="GetGenerateRatingReport()" class="form-control heading-text-color drop-down-border-color heading-text-color" ng-model="rater" style="max-width:none; width:56.7vw">
+                            <option class="heading-text-color" value="" disabled selected>---please select---</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <br />
+                @*<div class="row" id="divShowViewDetails" ng-show="divShowViewDetailsButton">
+
+                    <label></label>
+                    <label></label>
+                    <div class="col-xs-12 col-md-3 col-lg-6">
+
+                        <input type="button" id="btnGenerateReport" class="btn btn-success" value="View Report" ng-model="GenerateReport" ng-click="GetGenerateRatingReport()" />
+
+                    </div>
+                </div>*@
+
+                <div class="row" id="divGenerateReport">
+
+                    <label></label>
+                    <label></label>
+                    <div class="col-xs-12 col-md-3 col-lg-6">
+
+                        <input type="submit" id="btnGenerateReport" class="btn btn-success" value="Generate Report" ng-model="GenerateReport" />
+                         
+                        @*<button type="submit" aria-label="Left Align" id="btnGenerateReport" class="btn button-back-color" value="Generate Report" ng-model="GenerateReport">
+                            <i class="fa fa-download" aria-hidden="true"></i>  Generate Report
+                        </button>*@
+
+                    </div>
+                </div>
+
+
+               
+
+
+                <br />
+
+                  
+                    <div id="divReportPerRater">
+
+                        @*<i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+
+                          @Html.ActionLink("Export To PDF", "ExportToPDF", new { id = "ExportToPDF" })*@
+                     
+
+                        <input type="hidden" ng-model="ModelRaterName" />
+                        @*<hr class="heading-text-color" style="margin-bottom:4px; margin-top:0px; border:solid 0.1px" />*@
+                        <hr />
+                        <div align="center" class="heading-text-color" style="font-size:larger"><strong> 360 DEGREE PERFORMANCE REVIEW REPORT:  </strong><label id="lblSurveyForReport">{{ModelRaterName}}</label></div>
+                        <label id="lblSurveyForName"><strong></strong></label>
+                        <label id="lblRatingReportPeriod"><strong></strong></label>
+                        <br />
+                        <div align="center" class="heading-text-color" style="font-size:larger"><strong>RATING SUMMARY (PER RATER)</strong></div>
+
+                     <div ng-show="divShowDetailsReport" id="ShowDetailsReport">
+
+                         <div ng-repeat="item in RatingReport" ng-show="divShowDetailsReport">
+
+                             <hr />
+                             @*<hr class="heading-text-color" style="margin-bottom:0px; margin-top:4px; border:solid 0.1px" />*@
+                             <label class="heading-text-color" ><label class="heading-text-color"> Question: &nbsp;&nbsp;</label><label style="color:#464e55"> {{item.Question}}</label></label>
+                             <label id="lblQuestion" class="heading-text-color"></label><br />
+                             <label class="heading-text-color">Minimum Rating: &nbsp;</label><label id="lblMinimumRating" style="color:#464e55">{{item.Min_Rating}} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;</label>
+                             <label class="heading-text-color">Maximum Rating: &nbsp;</label><label id="lblMaximumRating" style="color:#464e55">{{item.Max_Rating}} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;</label>
+                             <label class="heading-text-color">Average Rating: &nbsp;</label><label id="lblMinimumRating" style="color:#464e55">{{item.Avg_Rating}}</label>
+                             @*<hr class="heading-text-color" style="margin-bottom:0px; margin-top:4px; border:solid 0.1px" />*@
+                             @*<hr />*@
+
+                             <div id="divShowRatersDetailsReport" ng-show="divShowRatersDetailsReport">
+
+                                 @*<div class="heading-text-color" style="font-size:larger"><strong> INDIVIDUAL RATER SCORES AND COMMENTS</strong></div><br /><br />*@
+                                 @*<label class="heading-text-color">{{item.Rater}} </label><label></label><br />*@
+                                 <label class="heading-text-color">Comment: &nbsp;<label style="color:#464e55"> {{item.Rater_Comment}}</label></label><label></label><br />
+                                 <label class="heading-text-color">Rating: &nbsp;<label style="color:#464e55"> {{item.Rating}}</label></label><label></label><br />
+                                 @*<hr class="heading-text-color" style="margin-bottom:0px; margin-top:4px; border:solid 0.1px" />*@
+
+                             </div>
+
+                            
+
+                         </div>
+
+                     </div>
+
+               
+
+                    </div>
+
+             
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="alertBg" id="DivLoadingProgress">
+
+        <div class="loading-popup">
+
+            <div id="loading" style="top:0vw; left:5%; position:relative">
+
+            </div>
+
+        </div>
+
+    </div>
+                            }
+<script src="~/Scripts/CRUDScripts/Views/Admin/adminController.js"></script>
+<script src="~/Scripts/CRUDScripts/Views/Admin/adminService.js"></script>
+<script src="~/Scripts/CRUDScripts/Views/CompleteSurvey/loadingservice.js"></script>

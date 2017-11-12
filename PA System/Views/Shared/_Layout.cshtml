@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - HR Performance</title>
+    <script>
+        window.paceOptions = {
+            ajax: {
+                trackMethods: ['GET', 'POST', 'PUT', 'DELETE', 'REMOVE']
+            }
+        };
+    </script>
+
+    <link href="~/Content/css/libs/pace.css" rel="stylesheet" />
+
+    @Styles.Render("~/site/css")
+    @Scripts.Render("~/site/modernizer")
+    @Scripts.Render("~/site/js")
+    @RenderSection("Javascript", required: false)
+
+</head>
+
+
+
+<body>
+
+    <div id="wrapper">
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+
+            @Html.Partial("_Menu")
+
+        </nav>
+
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        @RenderBody()
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+</body>
+
+</html>
+

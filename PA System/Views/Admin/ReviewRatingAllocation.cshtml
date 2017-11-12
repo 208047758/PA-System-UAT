@@ -1,0 +1,174 @@
+﻿@{
+    ViewBag.Title = "Review Rating Allocation";
+}
+<div class="row">
+    <div class="col-xs-12">
+        <h3 class="page-header heading-text-color">
+            Review Rating Allocation
+        </h3>
+    </div>
+</div>
+@using (Html.BeginForm("ReviewRatingAllocation", "Admin", FormMethod.Get, new { @id = "fromReviewRatingAllocation" }))
+{
+    <div class="col-xs-12 col-md-6 col-lg-9">
+
+        <div class="row">
+
+            <div ng-app="reviewRatingAllocationApp">
+
+                <div ng-controller="reviewRatingAllocationController">
+
+                    <label class="heading-text-color">Please Select a filter/search option below</label>
+
+                    <div class="panel panel-default drop-down-border-color" style="width:65%">
+
+                        <div class="panel-body ">
+
+                            <label class="heading-text-color"><input type="radio" ng-init="surveyStatus=FALSE" ng-model="All" name="surveyStatus" ng-click="ShowAll()" id="optAll" ng-value="TRUE" checked="checked" />All</label>
+
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <label class="heading-text-color"><input type="radio" ng-model="ByRater" ng-click="ShowRaterDiv()" name="surveyStatus" id="optRaterName" ng-view="FALSE" />By Rater</label>
+
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <label class="heading-text-color"><input type="radio" ng-model="byDepartment" name="surveyStatus" id="optDepartment" ng-value="FALSE" ng-click="ShowDepartmentDiv()" data-toggle="tooltip" />By Business Unit</label>
+                        </div>
+
+                    </div>
+
+                    <div class="row" ng-show="divShowBusinessUnitDropDown">
+
+                        <div class="col-xs-12 col-md-6 col-lg-6" ng-show="divShowBusinessUnitDropDown">
+
+                            <label class="heading-text-color">Select Business Unit</label>
+
+                            <select ng-model="BusinessUnit" id="drpBusinessUnit" ng-options="DepartmentDropDown.Name for DepartmentDropDown in DepartmentList track by DepartmentDropDown.Value" ng-change="GetSurveyCompletionStatusReportBySelectedbusinessUnit(BusinessUnit.Name)" class="form-control drop-down-border-color heading-text-color" style="max-width:none; width:40.8vw;">
+                                <option class="heading-text-color" value="" disabled selected>---Please Select---</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="row" ng-show="divShowRatersDropDown">
+
+                        <div class="col-xs-12 col-md-6 col-lg-6">
+
+                            <label class="heading-text-color">Select Rater</label>
+
+                            <select ng-init="Rater= RaterStatusList[0]" id="optRater" name="Rater" ng-change="GetSurveyCompletionStatusReportBySelectedRater(Rater)" ng-options="item.Rater for item in RaterStatusList" class="form-control heading-text-color drop-down-border-color heading-text-color" ng-model="Rater" style="max-width:none; width:40.8vw;">
+                                <option class="heading-text-color" value="" disabled selected>---Please Select---</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div ng-show="divShowCompletionStatusTable" style="width:65%">
+
+                        <div id="divShowAllEmployees" ng-model="ModelShowAll">
+
+                            <input type="checkbox" ng-model="ShowAllEmployees" id="chkShowAll" name="chkShowAllEmployees" ng-change="GetSurveyCompletionStatusReportPerRaterAll(true)" value="Include Raters" style="font-size:medium" /><label class="heading-text-color"> Show All Employees</label>
+
+                        </div>
+                        <br />
+                        
+                        <table class="table table-striped" datatable="ng" ng-show="showStatusCompletionTable" id="showAllEmployeeSurveyStatus">
+                            <thead style="color: white; background-color: #1cb5b0">
+                                <tr>
+                                    <th> Rater</th>
+                                    <th> No. of Surveys</th>
+                                    <th> No. of Questions </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="survey in SurveyCompletionStatusList | filter: searchKeyword ">
+                                    <td> {{survey.Rater}}</td>
+                                    <td>&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-info btn-circle" style="font-size:12pt; text-align:center">{{survey.No_of_Surveys}}</button></td>
+                                    <td>&nbsp;&nbsp;&nbsp;<button type="button" class="btn button-back-color btn-circle" style="font-size:11pt; text-align:center">{{survey.No_of_Questions}}</button></td>
+
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th> Rater</th>
+                                    <th> No. of Surveys</th>
+                                    <th> No. of Questions </th>
+                                </tr>
+                            </tfoot>
+
+                        </table>
+                    </div>
+
+                    <div ng-show="showPopup" id="popupMessage">
+                        <div class="alertBg" title="Survey Completion Status Summary">
+                            <div class="alertPlaceholder ">
+                                <h3 class="heading-text-color" style="margin-top:0px">Suverys Assigned to: {{Rater.Rater}}</h3>
+                                <hr class="heading-text-color" />
+                                <div class="row">
+                                    <div class="col-xs-12 col-md-6 col-lg-6">
+                                        <div ng-show="divShowRaterFilter">
+                                            <table class="table table-striped" datatable="ng" ng-show="viewSurveyCompletionTable" id="tableEmployeeSurveys">
+                                                <thead style="color: white; background-color: #1cb5b0">
+                                                    <tr>
+                                                        <th> Name</th>
+                                                        <th> Surname</th>
+                                                        <th> Business Unit </th>
+                                                        <th style="text-align:center">Survey Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="emp in Employees | filter: searchKeyword ">
+                                                        <td> {{emp.First_Name}}</td>
+                                                        <td> {{emp.Surname}} </td>
+                                                        <td>{{emp.Team_Desc}}</td>
+                                                        <td ng-if="emp.Completed == true" id="SurveyStatus" style="text-align:center"><a ng-click="LoadQuestionsPerEmployeeReport(emp.Survey_For)" style="text-decoration:none"><h4><span class="label label-success"> Completed</span></h4></a></td>
+                                                        <td ng-if="emp.Completed == false" id="SurveyStatus" style="text-align:center"><a ng-click="LoadQuestionsPerEmployeeReport(emp.Survey_For)" style="text-decoration:none"><h4><span class="label label-warning">Incomplete</span></h4></a></td>
+
+                                                    </tr>
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <th> Name</th>
+                                                        <th> Surname</th>
+                                                        <th> Business Unit </th>
+                                                        <th style="text-align:center">Survey Status</th>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div>
+                                    <input id="btnOk" class="btn btn-info" tabindex="2" value="Ok" ng-click="hidePrompt()">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="alertBg" id="DivLoadingProgress">
+
+        <div class="loading-popup">
+
+            <div id="loading" style="top:0vw; left:5%; position:relative">
+            </div>
+
+        </div>
+
+    </div>
+}
+
+<script src="~/Scripts/CRUDScripts/Views/Admin/reviewRatingAllocationController.js"></script>
+
+<script src="~/Scripts/CRUDScripts/Views/Admin/reviewRatingReportService.js"></script>
+
+<script src="~/Scripts/CRUDScripts/Views/CompleteSurvey/loadingservice.js"></script>
+

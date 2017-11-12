@@ -1,0 +1,67 @@
+﻿@{
+    ViewBag.Title = "Upload KPI";
+}
+<div class="row">
+    <div class="col-xs-12">
+        <h3 class="page-header heading-text-color">
+            Upload KPI
+        </h3>
+    </div>
+
+</div>
+
+
+
+@using (Html.BeginForm("UploadKPI", "KPI", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <div class="col-xs-12 col-md-6 col-lg-9">
+
+        <div class="row">
+
+            <div class="alert alert-success" role="alert" style="display:none; width:65%; padding-bottom:7px; padding-top:9px" id="saveUploadKPIStatusAlert">
+
+                <i class="fa fa-check-circle alert-message" aria-hidden="true"></i> &nbsp;<label id="lblUploadKPISuccessAlert">Survey Uploaded Successfully</label>
+                <a class="close" data-dismiss="alert" href="#">x</a>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="alert alert-danger" role="alert" style="display:none; width:65%; padding-bottom:7px; padding-top:9px" id="divUploadKPIErrorMessageAlert">
+
+                <i class="fa fa-exclamation-triangle alert-message" aria-hidden="true"></i> &nbsp;<label id="lblUploadKPIErrorMessageAlert">Error occured, please try again</label>
+                <a class="close" data-dismiss="alert" href="#">x</a>
+            </div>
+
+        </div>
+
+
+
+        <div class="row">
+
+            <div class="col-xs-12 col-md-3 col-lg-6">
+
+                <label class="heading-text-color">Upload KPI file (.xlsx, .xls, .xlm)</label>
+                <label class="btn btn-default btn-flex drop-down-border-color">
+                    <i class="fa fa-upload heading-text-color" aria-hidden="true"></i>&nbsp;&nbsp;
+                    <label id="fileUploadUploadKPICaption" style="font-weight:normal"><i> Choose file.....</i> </label>
+
+                    <input type="file" id="fileUploadUploadKPI" name="fileUploadUploadKPI" value="select a file" class="custom-file-input heading-text-color" style="display: none;" />
+                </label>
+
+            </div>
+
+            <div class="col-xs-12 col-md-3 col-lg-3" id="submitKPI">
+                <label></label>
+                <label></label>
+                <label></label>
+
+                <input type="submit" id="btnUploadUploadKPI" value="Submit" class="btn btn-block button-back-color" style="width:61%" />
+            </div>
+
+        </div>
+
+    </div>
+}
